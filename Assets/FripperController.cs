@@ -19,11 +19,11 @@ public class FripperController : MonoBehaviour {
 		//フリッパーの傾きを設定
 		SetAngle(this.defaultAngle);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		//左矢印キーを押した時左フリッパーを動かす
-		if (Input.GetKeyDown (KeyCode.LeftArrow) && tag == "LeftFripperTag") {
+		if (Input.GetKeyDown(KeyCode.LeftArrow) && tag == "LeftFripperTag") {
 			SetAngle (this.flickAngle);
 		}
 		//右矢印キーを押した時右フリッパーを動かす
@@ -37,6 +37,14 @@ public class FripperController : MonoBehaviour {
 		}
 		if (Input.GetKeyUp (KeyCode.RightArrow) && tag == "RightFripperTag") {
 			SetAngle (this.defaultAngle);
+		}
+		for (int i = 0; i < Input.touches.Length; i++) {
+			if (Screen.width / 2 < Input.touches [i].position.x && tag == "LeftFripperTag") {
+				SetAngle (this.flickAngle);
+			}
+			if (Screen.width / 2 > Input.touches [i].position.x && tag == "RightFripperTag") {
+				SetAngle (this.flickAngle);
+			}
 		}
 }
 
