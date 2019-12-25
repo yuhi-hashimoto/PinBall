@@ -11,6 +11,9 @@ public class FripperController : MonoBehaviour {
 	//弾いた時の傾き
 	private float flickAngle = -20;
 
+	int Leftfripper = -1;
+	int Rightfripper = -1;
+
 	// Use this for initialization
 	void Start () {
 		//HingeJointコンポーネント取得
@@ -21,9 +24,10 @@ public class FripperController : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		//左矢印キーを押した時左フリッパーを動かす
-		if (Input.GetKeyDown(KeyCode.LeftArrow) && tag == "LeftFripperTag") {
+		if (Input.GetKeyDown (KeyCode.LeftArrow) && tag == "LeftFripperTag") {
 			SetAngle (this.flickAngle);
 		}
 		//右矢印キーを押した時右フリッパーを動かす
@@ -39,17 +43,21 @@ public class FripperController : MonoBehaviour {
 			SetAngle (this.defaultAngle);
 		}
 		for (int i = 0; i < Input.touches.Length; i++) {
-			if (Screen.width / 2 > Input.touches [i].position.x && tag == "LeftFripperTag" && Input.touches [i].phase == TouchPhase.Began) {
+			if (Screen.width / 2 > Input.touches [i].position.x && tag == "LeftFripperTag" && Input.touches [i].phase == TouchPhase.Began && Leftfripper == -1) {
 				SetAngle (this.flickAngle);
+				Leftfripper = Input.touches [i].fingerId;
 			}
-			if (Screen.width / 2 < Input.touches [i].position.x && tag == "RightFripperTag" && Input.touches [i].phase == TouchPhase.Began) {
+			if (Screen.width / 2 < Input.touches [i].position.x && tag == "RightFripperTag" && Input.touches [i].phase == TouchPhase.Began && Rightfripper == -1) {
 				SetAngle (this.flickAngle);
+				Rightfripper = Input.touches [i].fingerId;
 			}
-			if (Screen.width / 2 > Input.touches [i].position.x && tag == "LeftFripperTag" && Input.touches [i].phase == TouchPhase.Ended) {
+			if (tag == "LeftFripperTag" && Input.touches [i].phase == TouchPhase.Ended && Input.touches [i].fingerId == Leftfripper) {
 				SetAngle (this.defaultAngle);
+				Leftfripper = -1;
 			}
-			if (Screen.width / 2 < Input.touches [i].position.x && tag == "RightFripperTag" && Input.touches [i].phase == TouchPhase.Ended) {
+			if (tag == "RightFripperTag" && Input.touches [i].phase == TouchPhase.Ended && Input.touches [i].fingerId == Rightfripper) {
 				SetAngle (this.defaultAngle);
+				Rightfripper = -1;
 			}
 		}
 }
